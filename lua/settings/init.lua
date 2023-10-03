@@ -64,3 +64,43 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.s
 	border = "single",
 })
 vim.diagnostic.config({ float = { border = "single" } })
+
+opt.fillchars = { eob = " " }
+opt.confirm = true
+
+opt.wildignore = {
+	"*.o",
+	"*.obj",
+	"*.a",
+	"*.so",
+	"*.out",
+	"*.class",
+	"*.pyc",
+	"*.jpg",
+	"*.jpeg",
+	"*.png",
+	"*.gif",
+	"*.tiff",
+	"*.webp",
+	"*.pdf",
+	"*.odt",
+	"*.odp",
+	"*.doc",
+	"*.docx",
+	"*.ppt",
+	"*.csv",
+	"__pycache__",
+	"*pycache*",
+	"**/tmp/**",
+	"**/node_modules/**",
+	".git",
+}
+
+opt.formatoptions:append({ "n" })
+opt.formatoptions:remove({ "t", "o", "2" })
+
+-- completion
+opt.complete:remove({ "u", "t" })
+opt.completeopt:append({ "menuone", "noinsert" })
+opt.wildmode = { "longest", "full" }
+opt.wildoptions:remove({ "tagfile" })

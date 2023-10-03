@@ -31,9 +31,9 @@ nvimtree.setup({
 			},
 		},
 	},
-	-- 	git = {
-	-- 		ignore = false,
-	-- 	},
+	git = {
+		ignore = true,
+	},
 })
 
 -- open nvim-tree on setup

@@ -1,5 +1,6 @@
 local M = {
 	{
+		opr = false,
 		"nvim-telescope/telescope.nvim",
 		requires = { "nvim-lua/plenary.nvim" },
 		config = function()

@@ -15,7 +15,6 @@ for name, section in pairs(keymap) do
 		for keybind, mapping_info in pairs(mode_values) do
 			local opts = {}
 			opts.desc = mapping_info[2]
-			-- print(mode, keybind, mapping_info[1], mapping_info[2])
 			vim.keymap.set(mode, keybind, mapping_info[1], opts)
 		end
 	end
