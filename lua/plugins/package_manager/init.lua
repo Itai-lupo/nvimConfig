@@ -1,48 +1,35 @@
-vim.cmd("packadd packer.nvim")
-
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost packer.lua source <afile> | PackerSync
-  augroup end
-]])
-
-local packer = require("packer")
-
-packer.init({
-	profile = {
-		enable = true,
-		threshold = 1,
-	},
-})
+local lazypath = vim.fn.stdpath("config") .. "/.plugins/lazy.nvim/"
+if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
+end
+vim.opt.rtp:prepend(lazypath)
 
 local plugins = {
-	{ "wbthomason/packer.nvim" },
-	{ "nvim-lua/plenary.nvim", module = "plenary" },
+    { "nvim-lua/plenary.nvim", module = "plenary" },
+    {"folke/lazy.nvim"}
 }
 
-local handle = vim.loop.fs_scandir("lua/plugins")
 local exclude = { package_manager = true }
-while handle do
-	local name, typ = vim.loop.fs_scandir_next(handle)
-
-	if not name then
-		-- Done, nothing left
-		break
-	end
-
-	if (typ == "directory") and not exclude[name] then
-		local module = require("plugins." .. name)
-		if type(module) == "table" then
-			table.insert(plugins, module)
-		else
-			print("failed to include " .. name .. " is not a table")
-		end
-	end
+local plugins_path = vim.fn.stdpath('config') .. '/lua/plugins'
+for _, file in ipairs(vim.fn.readdir(plugins_path, [[v:val !~ '\.lua$']])) do
+    if not exclude[file] then
+        local module = require("plugins." .. file)
+        if type(module) == "table" then
+            table.insert(plugins, module)
+        else
+            print("failed to include " .. file .. " is not a table")
+        end
+    end
 end
 
-packer.startup(function(use)
-	for _, plugin in ipairs(plugins) do
-		use(plugin)
-	end
-end)
+require("lazy").setup(plugins, {
+    root = vim.fn.stdpath('config') .. '/.plugins/',
+    lockfile = vim.fn.stdpath("config") .. "/.plugins/lazy-lock.json"
+})

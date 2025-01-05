@@ -1,7 +1,7 @@
 local M = {
 	"glepnir/lspsaga.nvim",
 	branch = "main",
-	requires = {
+	dependencies = {
 		{ "nvim-tree/nvim-web-devicons" },
 		{ "nvim-treesitter/nvim-treesitter" },
 	},

@@ -5,9 +5,6 @@ local M = {
 			require("plugins.nvim_tree.config")
 		end,
 	},
-	{
-		"kyazdani42/nvim-web-devicons",
-	},
 }
 
 return M

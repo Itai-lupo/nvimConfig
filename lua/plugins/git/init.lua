@@ -6,7 +6,11 @@ local M = {
 		end,
 	},
 
-	{ "lewis6991/gitsigns.nvim" }, -- show line modifications on left hand side
+	{ "lewis6991/gitsigns.nvim",
+        config =  function ()
+            require("plugins.git.config_gitsighns")
+        end
+}, -- show line modifications on left hand side
 }
 
 return M

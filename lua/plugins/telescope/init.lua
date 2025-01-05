@@ -1,17 +1,14 @@
 local M = {
-	{
-		opr = false,
 		"nvim-telescope/telescope.nvim",
-		requires = { "nvim-lua/plenary.nvim" },
+		dependencies = { "nvim-lua/plenary.nvim",--[[  {
+		        "nvim-telescope/telescope-fzf-native.nvim",
+		        build = "make"
+            } ]]
+        },
 		config = function()
 			require("plugins.telescope.config")
 		end,
 		cmd = "Telescope",
-	},
-	{
-		"nvim-telescope/telescope-fzf-native.nvim",
-		run = "make",
-	},
-}
+	}
 
 return M

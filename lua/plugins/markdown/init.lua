@@ -1,6 +1,6 @@
 local M = {
 	"iamcco/markdown-preview.nvim",
-	run = function()
+	build  = function()
 		vim.fn["mkdp#util#install"]()
 	end,
 	config = function()
