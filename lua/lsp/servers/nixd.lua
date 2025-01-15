@@ -1,7 +1,9 @@
 local lsp_utils = require("lsp/utils")
 
 M = lsp_utils.get_default_lsp()
-M.cnd = { "nixd" }
+M.cmd = { "nixd"}
+M.root_dir = require('lspconfig/util').root_pattern('.git', 'flake.nix', 'default.nix')
+
 M.settings = {
     nixd = {
         nixpkgs = {
@@ -17,13 +19,10 @@ M.settings = {
         },
         options = {
             nixos = {
-                expr = "let flake = builtins.getFlake(toString ./.); in flake.nixosConfigurations.nz.options",
+                expr = '(builtins.getFlake ("git+file://" + toString ./.)).nixosConfigurations.k-on.options',
             },
             home_manager = {
-                expr = 'let flake = builtins.getFlake(toString ./.); in flake.homeConfigurations."sab@mbp16".options',
-            },
-            darwin = {
-                expr = "let flake = builtins.getFlake(toString ./.); in flake.darwinConfigurations.mbp16.options",
+                expr = '(builtins.getFlake ("git+file://" + toString ./.)).homeConfigurations."ruixi@k-on".options',
             },
         },
     }
