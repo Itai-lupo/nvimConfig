@@ -52,21 +52,42 @@ if status_ok then
     M.capabilities = cmp_nvim_lsp.default_capabilities()
 end
 
-M.get_default_lsp = function(opts)
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(args)
+        local bufnr = args.buf
+        local client_id = args.data.client_id
+        local client = vim.lsp.get_client_by_id(client_id)
+        set_lsp_keymap(bufnr, lsp_default_keymap)
+        lsp_highlight_document(client)
+    end,
+})
+
+
+M.get_default_lsp = function(name, opts)
     local keymap = lsp_default_keymap
     if opts ~= nil and opts.keymap ~= nil then
         keymap = vim.tbl_deep_extend("force", keymap, opts.keymap)
     end
 
-    local function default_on_attach(client, bufnr)
-        set_lsp_keymap(bufnr, keymap)
-        lsp_highlight_document(client)
-        if opts ~= nil and opts.on_attach ~= nil then
-            opts.on_attach(client, bufnr)
+    local function default_on_attach(args)
+        local bufnr = args.buf
+        local client_id = args.data.client_id
+        local client = vim.lsp.get_client_by_id(client_id)
+        if opts ~= nil and client.name == name then
+            if opts.keymap ~= nil then
+                set_lsp_keymap(bufnr, opts.keymap)
+            end
+            if opts.on_attach ~= nil then
+                opts.on_attach(client, bufnr)
+            end
         end
     end
 
-    return { on_attach = default_on_attach, capabilities = M.capabilities }
+    vim.api.nvim_create_autocmd('LspAttach', {
+        callback = default_on_attach
+    })
+
+    return { capabilities = M.capabilities }
 end
 
 return M

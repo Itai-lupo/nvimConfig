@@ -1,8 +1,10 @@
 local lsp_utils = require("lsp/utils")
+local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 M = lsp_utils.get_default_lsp()
-M.cmd = { "nixd"}
-M.root_dir = require('lspconfig/util').root_pattern('.git', 'flake.nix', 'default.nix')
+M.cmd = { "nixd" }
+M.root_markers = { "flake.nix", ".git" }
+M.filetypes = { "nix" }
 
 M.settings = {
     nixd = {
@@ -15,14 +17,16 @@ M.settings = {
             expr = "import (builtins.getFlake(toString ./.)).inputs.nixpkgs { }",
         },
         formatting = {
-            command = { "nix fmt" },     -- or nixfmt or nixpkgs-fmt
+            command = { "nixpkgs-fmt"},
         },
         options = {
             nixos = {
-                expr = '(builtins.getFlake ("git+file://" + toString ./.)).nixosConfigurations.k-on.options',
+                expr =
+                [[(let flake = builtins.getFlake (toString ./.); in (builtins.head (builtins.attrValues flake.nixosConfigurations)).options)]],
             },
-            home_manager = {
-                expr = '(builtins.getFlake ("git+file://" + toString ./.)).homeConfigurations."ruixi@k-on".options',
+            ["home-manager"] = {
+                expr =
+                [[(let flake = builtins.getFlake (toString ./.); in (builtins.head (builtins.attrValues flake.homeConfigurations)).options)]],
             },
         },
     }

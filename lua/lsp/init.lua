@@ -1,21 +1,10 @@
-local status_ok, lspconfig = pcall(require, "lspconfig")
-if not status_ok then
-    return
-end
-
-
 local servers = {}
 
-local servers_path = vim.fn.stdpath('config') .. '/lua/lsp/servers'
+local lsp_dir = vim.fn.stdpath('config') .. '/lsp'
 
-for _, file in ipairs(vim.fn.readdir(servers_path)) do
+for _, file in ipairs(vim.fn.readdir(lsp_dir)) do
     local file_name = file:match("(.*).lua$")
-    local server = require("lsp.servers." .. file_name)
-    if type(server) == "table" then
-        servers[file_name] = server
-    else
-        print("failed to include " .. file .. " is not a table")
-    end
+    table.insert(servers, file_name)
 end
 
 local config = require("lsp/ui/diagnostic_config")
@@ -29,6 +18,4 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.s
     border = "rounded",
 })
 
-for server_name, server_settings in pairs(servers) do
-    lspconfig[server_name].setup(server_settings)
-end
+vim.lsp.enable(servers)
