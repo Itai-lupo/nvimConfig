@@ -6,6 +6,7 @@ local keymap = {
     undotree = require("plugins.undotree.keymap"),
     tag_bar = require("plugins.tag_bar.keymap"),
     fugitive = require("plugins.git.keymap"),
+    neotest = require("plugins.neotest.keymap")
 }
 
 for _, section in pairs(keymap) do

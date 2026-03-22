@@ -1,7 +1,7 @@
 local M = {
 	"sidebar-nvim/sidebar.nvim",
 	config = function()
-		require("plugins.sidebar.config")
+		-- require("plugins.sidebar.config")
 	end,
 }
 
