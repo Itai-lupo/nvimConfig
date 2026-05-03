@@ -51,11 +51,12 @@ cmp.setup({
     }),
     -- sources for autocompletion
     sources = cmp.config.sources({
-        { name = "path" },     -- file system paths
-        { name = "luasnip" },  -- snippets
-        { name = "nvim_lsp" }, -- lsp
-        { name = "nvim_lua" },
-        { name = "buffer" },   -- text within current buffer
+        { name = "nvim_lsp", priority = 1000 }, -- lsp
+        { name = "path" , priority = 900},     -- file system paths
+        { name = "codecompanion", priority = 700 },
+        { name = "nvim_lua", priority = 600 },
+        { name = "buffer", priority = 500 },   -- text within current buffer
+        { name = "luasnip", priority = 400 },  -- snippets
     }),
 
     window = {

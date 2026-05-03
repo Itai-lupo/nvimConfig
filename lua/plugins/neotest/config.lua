@@ -3,7 +3,10 @@ local gtest = require("neotest-gtest")
 local pytest = require("neotest-python")
 
 
+
+
 neotest.setup({
+    log_level = vim.log.levels.DEBUG,
     adapters = {
         gtest.setup({
             is_test_file = function(file)
